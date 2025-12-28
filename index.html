@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ori Gastronomia — Cardápio Digital</title>
+
+  <!-- QR Code -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg:#000;
+      --panel:#0c0c0e;
+      --card:#111114;
+      --stroke:rgba(255,255,255,.10);
+      --soft:rgba(255,255,255,.06);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --gold:#d4af37;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1000px 500px at 15% -10%, rgba(212,175,55,.12), transparent 60%),
+                  radial-gradient(900px 520px at 110% 15%, rgba(255,255,255,.06), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    .top-img{
+      width:100%;
+      height:260px;
+      object-fit:cover;
+      display:block;
+      border-bottom:1px solid var(--stroke);
+      background:#000;
+    }
+    .header{
+      position:sticky; top:0; z-index:40;
+      background:rgba(0,0,0,.78);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--stroke);
+    }
+    .header-inner{
+      max-width:1200px;
+      margin:0 auto;
+      padding:12px 14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; flex-direction:column; gap:2px;
+      min-width:220px;
+    }
+    .brand .name{font-weight:900; letter-spacing:.4px; font-size:18px}
+    .brand .tag{font-size:12px; color:var(--muted)}
+
+    .controls{
+      display:flex; gap:10px; align-items:center; flex:1;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .search{
+      display:flex; align-items:center; gap:8px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.03);
+      border-radius:999px;
+      padding:8px 12px;
+      min-width:min(520px, 92vw);
+    }
+    .search input{
+      width:100%;
+      border:0;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:14px;
+    }
+    .chip{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.03);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip strong{color:var(--text)}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px 14px 60px}
+
+    /* categorias flutuantes (estilo VucaFood) */
+    .catbar{
+      position:sticky;
+      top:78px;
+      z-index:30;
+      background:rgba(0,0,0,.64);
+      backdrop-filter: blur(10px);
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      padding:10px;
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .catbar a{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--soft);
+      background:rgba(255,255,255,.02);
+      font-size:12px;
+      color:rgba(255,255,255,.78);
+      white-space:nowrap;
+    }
+    .catbar a:hover{border-color:rgba(212,175,55,.35)}
+
+    .section{margin-top:16px}
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      padding:14px 2px 10px;
+    }
+    .section-head h2{
+      margin:0;
+      font-size:15px;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+      border-left:4px solid var(--gold);
+      padding-left:10px;
+    }
+    .section-head .meta{font-size:12px; color:var(--muted)}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+      gap:14px;
+    }
+
+    .card{
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow: 0 12px 28px rgba(0,0,0,.40);
+      display:flex; flex-direction:column;
+    }
+    .media{
+      position:relative;
+      background:#000;
+    }
+    .media video, .media iframe{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border:0;
+      display:block;
+      background:#000;
+    }
+    .media .badge{
+      position:absolute;
+      left:10px; top:10px;
+      border:1px solid var(--soft);
+      background:rgba(0,0,0,.55);
+      padding:6px 9px;
+      border-radius:999px;
+      font-size:11px;
+      color:rgba(255,255,255,.8);
+    }
+    .info{padding:12px 12px 10px; display:flex; flex-direction:column; gap:6px}
+    .title{font-size:14px; font-weight:800; line-height:1.25}
+    .price{color:var(--gold); font-weight:900; font-variant-numeric: tabular-nums}
+    .actions{display:flex; gap:8px; padding:0 12px 12px}
+    .btn{
+      flex:1;
+      border:1px solid var(--soft);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.88);
+      padding:10px 10px;
+      border-radius:12px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn:hover{border-color:rgba(212,175,55,.35)}
+    .btn.primary{
+      border-color:rgba(212,175,55,.35);
+      background:rgba(212,175,55,.10);
+    }
+
+    /* Modal de vídeo */
+    .modal{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index:80;
+    }
+    .modal.open{display:flex}
+    .modal-card{
+      width:min(980px, 96vw);
+      background:rgba(12,12,14,.92);
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      overflow:hidden;
+    }
+    .modal-top{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 14px;
+      border-bottom:1px solid var(--stroke);
+      gap:10px;
+    }
+    .modal-top .mtitle{font-weight:900}
+    .modal-top .close{
+      border:1px solid var(--soft);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.9);
+      padding:8px 10px;
+      border-radius:12px;
+      cursor:pointer;
+    }
+    .modal-media video, .modal-media iframe{
+      width:100%;
+      aspect-ratio:16/9;
+      border:0;
+      background:#000;
+      display:block;
+    }
+    footer{
+      margin-top:22px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      border-top:1px solid var(--stroke);
+      padding-top:14px;
+    }
+
+    /* bloco QR / WhatsApp */
+    .cta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.02);
+      padding:12px;
+      border-radius:18px;
+      margin-top:16px;
+    }
+    .cta-left{display:flex; flex-direction:column; gap:6px}
+    .cta-left .t{font-weight:900}
+    .cta-left .d{color:var(--muted); font-size:12px}
+    .cta-right{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    #qrcode{background:#fff; padding:8px; border-radius:12px}
+    .wa{
+      border:1px solid rgba(212,175,55,.35);
+      background:rgba(212,175,55,.10);
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:900;
+      font-size:13px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+  </style>
+</head>
+
+<body>
+  <img class="top-img" src="topo-ori.png" alt="Ori Gastronomia" />
+
+  <div class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="name">Ori Gastronomia</div>
+        <div class="tag">Cardápio Digital • vídeos em todos os pratos</div>
+      </div>
+
+      <div class="controls">
+        <div class="search" title="Pesquisar no cardápio">
+          🔎
+          <input id="search" type="search" placeholder="Buscar: salmão, temaki, hot, yakisoba..." />
+        </div>
+
+        <div class="chip" id="modeChip" title="Alternar entre MP4 local e Embed">
+          Modo: <strong id="modeText">MP4 local</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <nav class="catbar" id="catbar"></nav>
+
+    <div class="cta">
+      <div class="cta-left">
+        <div class="t">📲 Aponte a câmera e abra o cardápio</div>
+        <div class="d">Edite o link do QR no código (CARDAPIO_URL). Ideal para mesa/recepção.</div>
+      </div>
+      <div class="cta-right">
+        <div id="qrcode" aria-label="QR Code do cardápio"></div>
+        <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">
+          💬 Pedir no WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div id="sections"></div>
+
+    <footer>
+      <div>© Ori Gastronomia — Cardápio Digital</div>
+      <div>Valores sujeitos a alteração • Vídeos ilustrativos</div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="mtitle" id="modalTitle">Prato</div>
+        <button class="close" id="modalClose">Fechar ✕</button>
+      </div>
+      <div class="modal-media" id="modalMedia"></div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // 1) CONFIGURAR AQUI
+    // =========================
+    const CARDAPIO_URL = "https://seusite.com/cardapio-ori"; // <-- troque pelo link real quando hospedar
+    const WHATSAPP_NUMBER = "5562999999999";                // <-- troque (DDI+DDD+numero, só dígitos)
+    const MESA = "Mesa 01";                                 // <-- opcional (você pode trocar por Mesa 02, etc)
+
+    // =========================
+    // 2) DADOS DO CARDÁPIO
+    // =========================
+    const ITEMS = [{"id": 1, "cat": "Rodízios", "name": "Rodízio Executivo (Almoço seg a sex)", "price": "R$ 89,90", "video": "videos/01-rodizio-executivo.mp4", "embed": ""}, {"id": 2, "cat": "Rodízios", "name": "Rodízio Especial (Noite, finais de semana e feriados)", "price": "R$ 119,90", "video": "videos/02-rodizio-especial.mp4", "embed": ""}, {"id": 3, "cat": "Rodízios", "name": "Rodízio Kids (5 a 9 anos)", "price": "R$ 59,90", "video": "videos/03-rodizio-kids.mp4", "embed": ""}, {"id": 4, "cat": "Queridinhos da Casa", "name": "Combinado do Cheff (Premium)", "price": "R$ 229,00", "video": "videos/04-combinado-cheff.mp4", "embed": ""}, {"id": 5, "cat": "Queridinhos da Casa", "name": "Combinado Salmão (22 peças)", "price": "R$ 110,00", "video": "videos/05-combinado-salmao-22.mp4", "embed": ""}, {"id": 6, "cat": "Queridinhos da Casa", "name": "Combinado Ajisai (Individual)", "price": "R$ 70,00", "video": "videos/06-combinado-ajisai.mp4", "embed": ""}, {"id": 7, "cat": "Queridinhos da Casa", "name": "Combinado Sakura (2 pessoas)", "price": "R$ 140,00", "video": "videos/07-combinado-sakura-2p.mp4", "embed": ""}, {"id": 8, "cat": "Almoço Executivo", "name": "Executivo de Peixe Branco", "price": "R$ 42,00", "video": "videos/08-executivo-peixe-branco.mp4", "embed": ""}, {"id": 9, "cat": "Almoço Executivo", "name": "Executivo de Salmão Grelhado", "price": "R$ 54,00", "video": "videos/09-executivo-salmao-grelhado.mp4", "embed": ""}, {"id": 10, "cat": "Almoço Executivo", "name": "Yakisoba Executivo (Carne ou Frango)", "price": "R$ 38,00", "video": "videos/10-yakisoba-executivo.mp4", "embed": ""}, {"id": 11, "cat": "Para Petiscar", "name": "Edamame com Flor de Sal", "price": "R$ 28,00", "video": "videos/11-edamame-flor-de-sal.mp4", "embed": ""}, {"id": 12, "cat": "Para Petiscar", "name": "Sunomono Simples", "price": "R$ 18,00", "video": "videos/12-sunomono-simples.mp4", "embed": ""}, {"id": 13, "cat": "Para Petiscar", "name": "Shimeji na Manteiga (200g)", "price": "R$ 45,00", "video": "videos/13-shimeji-manteiga-200g.mp4", "embed": ""}, {"id": 14, "cat": "Para Petiscar", "name": "Guioza Suíno (5 unidades)", "price": "R$ 32,00", "video": "videos/14-guioza-suino-5.mp4", "embed": ""}, {"id": 15, "cat": "Para Petiscar", "name": "Harumaki de Queijo (2 unidades)", "price": "R$ 18,00", "video": "videos/15-harumaki-queijo-2.mp4", "embed": ""}, {"id": 16, "cat": "Para Petiscar", "name": "Ebi Spicy (Camarão Crocante)", "price": "R$ 58,00", "video": "videos/16-ebi-spicy.mp4", "embed": ""}, {"id": 17, "cat": "Hots", "name": "Hot Philadelphia (10 unidades)", "price": "R$ 36,00", "video": "videos/17-hot-philadelphia-10.mp4", "embed": ""}, {"id": 18, "cat": "Hots", "name": "Hot Especial do Cheff (10 unidades)", "price": "R$ 42,00", "video": "videos/18-hot-especial-cheff-10.mp4", "embed": ""}, {"id": 19, "cat": "Hots", "name": "Hot Doce (Banana com Nutella)", "price": "R$ 28,00", "video": "videos/19-hot-doce-banana-nutella.mp4", "embed": ""}, {"id": 20, "cat": "Sashimis", "name": "Sashimi Salmão (5 unidades)", "price": "R$ 32,00", "video": "videos/20-sashimi-salmao-5.mp4", "embed": ""}, {"id": 21, "cat": "Sashimis", "name": "Sashimi Atum (5 unidades)", "price": "R$ 34,00", "video": "videos/21-sashimi-atum-5.mp4", "embed": ""}, {"id": 22, "cat": "Sashimis", "name": "Sashimi Tilápia com Limão (5 unidades)", "price": "R$ 26,00", "video": "videos/22-sashimi-tilapia-limao-5.mp4", "embed": ""}, {"id": 23, "cat": "Sashimis", "name": "Sashimi de Barriga de Salmão Trufado (5 unidades)", "price": "R$ 42,00", "video": "videos/23-sashimi-barriga-trufado-5.mp4", "embed": ""}, {"id": 24, "cat": "Carpaccios", "name": "Carpaccio de Salmão (15 fatias)", "price": "R$ 58,00", "video": "videos/24-carpaccio-salmao-15.mp4", "embed": ""}, {"id": 25, "cat": "Carpaccios", "name": "Carpaccio de Tilápia (15 fatias)", "price": "R$ 48,00", "video": "videos/25-carpaccio-tilapia-15.mp4", "embed": ""}, {"id": 26, "cat": "Carpaccios", "name": "Carpaccio Trufado Ori", "price": "R$ 68,00", "video": "videos/26-carpaccio-trufado-ori.mp4", "embed": ""}, {"id": 27, "cat": "Gunkans e Niguiris", "name": "Niguiri Salmão (dupla)", "price": "R$ 18,00", "video": "videos/27-niguiri-salmao-dupla.mp4", "embed": ""}, {"id": 28, "cat": "Gunkans e Niguiris", "name": "Niguiri Skin (dupla)", "price": "R$ 14,00", "video": "videos/28-niguiri-skin-dupla.mp4", "embed": ""}, {"id": 29, "cat": "Gunkans e Niguiris", "name": "Gunkan Shake (Salmão batido) (dupla)", "price": "R$ 20,00", "video": "videos/29-gunkan-shake-dupla.mp4", "embed": ""}, {"id": 30, "cat": "Gunkans e Niguiris", "name": "Gunkan Ebi (Camarão) (dupla)", "price": "R$ 24,00", "video": "videos/30-gunkan-ebi-dupla.mp4", "embed": ""}, {"id": 31, "cat": "Gunkans e Niguiris", "name": "Gunkan Especial do Cheff (dupla)", "price": "R$ 26,00", "video": "videos/31-gunkan-especial-cheff-dupla.mp4", "embed": ""}, {"id": 32, "cat": "Temakis", "name": "Temaki Philadelphia", "price": "R$ 38,00", "video": "videos/32-temaki-philadelphia.mp4", "embed": ""}, {"id": 33, "cat": "Temakis", "name": "Temaki Salmão Grelhado", "price": "R$ 36,00", "video": "videos/33-temaki-salmao-grelhado.mp4", "embed": ""}, {"id": 34, "cat": "Temakis", "name": "Temaki Hot (Empanado)", "price": "R$ 42,00", "video": "videos/34-temaki-hot-empanado.mp4", "embed": ""}, {"id": 35, "cat": "Temakis", "name": "Temaki sem Arroz (Fit)", "price": "R$ 48,00", "video": "videos/35-temaki-fit-sem-arroz.mp4", "embed": ""}, {"id": 36, "cat": "Combinados Especiais", "name": "Combo Fit (Sem Arroz - 20 peças)", "price": "R$ 115,00", "video": "videos/36-combo-fit-sem-arroz-20.mp4", "embed": ""}, {"id": 37, "cat": "Combinados Especiais", "name": "Combinado sem Cream Cheese (18 peças)", "price": "R$ 99,00", "video": "videos/37-combinado-sem-cream-cheese-18.mp4", "embed": ""}, {"id": 38, "cat": "Combinados Especiais", "name": "Combinado Ume (3 pessoas)", "price": "R$ 190,00", "video": "videos/38-combinado-ume-3p.mp4", "embed": ""}, {"id": 39, "cat": "Pratos Quentes", "name": "Yakisoba Misto (Grande)", "price": "R$ 62,00", "video": "videos/39-yakisoba-misto-grande.mp4", "embed": ""}, {"id": 40, "cat": "Pratos Quentes", "name": "Teppanyaki de Salmão", "price": "R$ 78,00", "video": "videos/40-teppanyaki-salmao.mp4", "embed": ""}, {"id": 41, "cat": "Pratos Quentes", "name": "Chicken Katsu (Frango empanado)", "price": "R$ 48,00", "video": "videos/41-chicken-katsu.mp4", "embed": ""}, {"id": 42, "cat": "Bebidas e Sobremesas", "name": "Refrigerante Lata", "price": "R$ 7,50", "video": "videos/42-refrigerante-lata.mp4", "embed": ""}, {"id": 43, "cat": "Bebidas e Sobremesas", "name": "Água Mineral", "price": "R$ 6,00", "video": "videos/43-agua-mineral.mp4", "embed": ""}, {"id": 44, "cat": "Bebidas e Sobremesas", "name": "Cerveja Long Neck (Heineken/Stella)", "price": "R$ 12,00", "video": "videos/44-cerveja-long-neck.mp4", "embed": ""}, {"id": 45, "cat": "Bebidas e Sobremesas", "name": "Petit Gateau com Sorvete", "price": "R$ 28,00", "video": "videos/45-petit-gateau.mp4", "embed": ""}, {"id": 46, "cat": "Bebidas e Sobremesas", "name": "Tempurá de Sorvete", "price": "R$ 26,00", "video": "videos/46-tempura-de-sorvete.mp4", "embed": ""}];
+
+    // =========================
+    // 3) RENDER
+    // =========================
+    const sectionsEl = document.getElementById("sections");
+    const catbarEl = document.getElementById("catbar");
+    const searchEl = document.getElementById("search");
+    const modeChip = document.getElementById("modeChip");
+    const modeText = document.getElementById("modeText");
+
+    // modo: "local" (mp4) ou "embed" (iframe)
+    let mode = "local";
+
+    function slug(s) {
+      return s.toLowerCase()
+              .normalize("NFD").replace(/[̀-ͯ]/g,"")
+              .replace(/[^a-z0-9]+/g,"-")
+              .replace(/(^-|-$)/g,"");
+    }
+
+    const CATS = [...new Set(ITEMS.map(i => i.cat))];
+
+    function renderCatbar() {
+      catbarEl.innerHTML = CATS.map(c => {
+        const id = "cat-" + slug(c);
+        return `<a href="#${id}">🍣 ${c}</a>`;
+      }).join("");
+    }
+
+    function mediaHTML(item) {
+      // Se o usuário escolher "Embed", usamos item.embed (ex: YouTube embed).
+      // Se estiver vazio, cai no MP4 local automaticamente.
+      const hasEmbed = item.embed && item.embed.trim().length > 0;
+      if (mode === "embed" && hasEmbed) {
+        return `
+          <iframe src="${item.embed}"
+            title="${item.name}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        `;
+      }
+      // padrão: mp4 local
+      return `
+        <video controls preload="metadata" playsinline>
+          <source src="${item.video}" type="video/mp4" />
+          Seu navegador não suporta vídeo.
+        </video>
+      `;
+    }
+
+    function renderSections(filterText="") {
+      const ft = filterText.trim().toLowerCase();
+      sectionsEl.innerHTML = "";
+
+      CATS.forEach(cat => {
+        const sid = "cat-" + slug(cat);
+        const items = ITEMS.filter(i => i.cat === cat).filter(i => {
+          if (!ft) return true;
+          return (i.name + " " + i.price + " " + i.cat).toLowerCase().includes(ft);
+        });
+
+        if (items.length === 0) return;
+
+        const grid = items.map(i => `
+          <div class="card" data-name="${i.name}">
+            <div class="media">
+              <div class="badge">🎥 vídeo</div>
+              ${mediaHTML(i)}
+            </div>
+            <div class="info">
+              <div class="title">${i.name}</div>
+              <div class="price">${i.price}</div>
+            </div>
+            <div class="actions">
+              <button class="btn" onclick="openModal(${i.id})">Ver maior</button>
+              <button class="btn primary" onclick="pedidoWhats(${i.id})">Pedir</button>
+            </div>
+          </div>
+        `).join("");
+
+        sectionsEl.insertAdjacentHTML("beforeend", `
+          <section class="section" id="${sid}">
+            <div class="section-head">
+              <h2>${cat}</h2>
+              <div class="meta">${items.length} itens</div>
+            </div>
+            <div class="grid">${grid}</div>
+          </section>
+        `);
+      });
+    }
+
+    // =========================
+    // 4) MODAL
+    // =========================
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMedia = document.getElementById("modalMedia");
+    const modalClose = document.getElementById("modalClose");
+
+    window.openModal = function(id) {
+      const item = ITEMS.find(x => x.id === id);
+      modalTitle.textContent = item.name + " • " + item.price;
+      // usar embed se estiver ativo e disponível
+      const hasEmbed = item.embed && item.embed.trim().length > 0;
+      if (mode === "embed" && hasEmbed) {
+        modalMedia.innerHTML = `
+          <iframe src="${item.embed}"
+            title="${item.name}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>`;
+      } else {
+        modalMedia.innerHTML = `
+          <video controls autoplay preload="metadata" playsinline>
+            <source src="${item.video}" type="video/mp4" />
+          </video>`;
+      }
+      modal.classList.add("open");
+    }
+
+    function closeModal() {
+      modal.classList.remove("open");
+      modalMedia.innerHTML = "";
+    }
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+
+    // =========================
+    // 5) WHATSAPP (pedido na mesa)
+    // =========================
+    function buildWhatsLink(msg) {
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    }
+
+    window.pedidoWhats = function(id) {
+      const item = ITEMS.find(x => x.id === id);
+      const msg = `Olá! Gostaria de pedir: ${item.name} (${item.price}). \n${MESA}`;
+      window.open(buildWhatsLink(msg), "_blank");
+    }
+
+    // botão principal
+    const waLink = document.getElementById("waLink");
+    waLink.href = buildWhatsLink(`Olá! Quero fazer um pedido.\n${MESA}`);
+
+    // =========================
+    // 6) QR CODE
+    // =========================
+    new QRCode(document.getElementById("qrcode"), {
+      text: CARDAPIO_URL,
+      width: 112,
+      height: 112
+    });
+
+    // =========================
+    // 7) BUSCA E MODO
+    // =========================
+    searchEl.addEventListener("input", () => renderSections(searchEl.value));
+
+    modeChip.addEventListener("click", () => {
+      mode = (mode === "local") ? "embed" : "local";
+      modeText.textContent = (mode === "local") ? "MP4 local" : "Embed (YouTube)";
+      renderSections(searchEl.value);
+    });
+
+    // init
+    renderCatbar();
+    renderSections();
+  </script>
+</body>
+</html>
