@@ -26,12 +26,12 @@ a{color:#fff;text-decoration:none}
 .menu{
   position:sticky;
   top:0;
+  z-index:10;
   background:#000;
   border-bottom:1px solid #222;
   padding:10px;
   overflow-x:auto;
   white-space:nowrap;
-  z-index:10;
 }
 .menu a{
   display:inline-block;
@@ -104,73 +104,124 @@ a{color:#fff;text-decoration:none}
   <a href="#hots">Hots</a>
   <a href="#sashimis">Sashimis</a>
   <a href="#carpaccios">Carpaccios</a>
-  <a href="#gunkans">Gunkans</a>
+  <a href="#gunkans">Gunkans & Niguiris</a>
   <a href="#temakis">Temakis</a>
-  <a href="#combinados">Combinados</a>
+  <a href="#combinados">Combinados Especiais</a>
   <a href="#quentes">Pratos Quentes</a>
-  <a href="#bebidas">Bebidas</a>
+  <a href="#bebidas">Bebidas & Sobremesas</a>
 </div>
 
 <div class="container">
 
-<!-- ===== MODELO DO PLAYER AFILIAZE (REPITA) ===== -->
-<!-- TROQUE O CÓDIGO DO VÍDEO EM CADA PRATO -->
+<!-- MODELO DO PLAYER AFILIAZE (REPITA E TROQUE DEPOIS) -->
+<script>
+function afiliazePlayer(id){
+  var d=document.getElementById(id);
+  if(!d) return;
+  var p=document.createElement("div");
+  p.className="afze-player-container";
+  p.innerHTML='<div class="afze-player" style="position:relative;width:100%;padding:56.25% 0 0;" id="'+id+'-player"></div>';
+  d.appendChild(p);
+  var s=document.createElement("script");
+  s.src="https://cdn.afze-host3.com/user-video/c7cf5136-86b5-11ef-8587-f23c94100626/5d102bcb-e0b5-11f0-983a-f23c94100626.js";
+  s.async=true;
+  document.head.appendChild(s);
+}
+</script>
 
 <!-- RODÍZIOS -->
-<div class="section" id="rodizios">
-<h2>Rodízios</h2>
-<div class="grid">
-
-<div class="card">
-  <div class="player-slot">
-    <div class="afze-player-container">
-      <div class="afze-player" style="position:relative;width:100%;padding:56.25% 0 0;" id="video1"></div>
-      <script>
-        var s=document.createElement("script");
-        s.src="https://cdn.afze-host3.com/user-video/c7cf5136-86b5-11ef-8587-f23c94100626/5d102bcb-e0b5-11f0-983a-f23c94100626.js";
-        s.async=true;
-        document.head.appendChild(s);
-      </script>
-    </div>
-  </div>
-  <div class="info"><div class="nome">Rodízio Executivo</div><div class="preco">R$ 89,90</div></div>
-</div>
-
-<div class="card">
-  <div class="player-slot">
-    <div class="afze-player-container">
-      <div class="afze-player" style="position:relative;width:100%;padding:56.25% 0 0;" id="video2"></div>
-    </div>
-  </div>
-  <div class="info"><div class="nome">Rodízio Especial</div><div class="preco">R$ 119,90</div></div>
-</div>
-
-<div class="card">
-  <div class="player-slot">
-    <div class="afze-player-container">
-      <div class="afze-player" style="position:relative;width:100%;padding:56.25% 0 0;" id="video3"></div>
-    </div>
-  </div>
-  <div class="info"><div class="nome">Rodízio Kids</div><div class="preco">R$ 59,90</div></div>
-</div>
-
-</div>
-</div>
+<div class="section" id="rodizios"><h2>Rodízios</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v1"></div><script>afiliazePlayer("v1")</script><div class="info"><div class="nome">Rodízio Executivo (Almoço seg a sex)</div><div class="preco">R$ 89,90</div></div></div>
+<div class="card"><div class="player-slot" id="v2"></div><script>afiliazePlayer("v2")</script><div class="info"><div class="nome">Rodízio Especial</div><div class="preco">R$ 119,90</div></div></div>
+<div class="card"><div class="player-slot" id="v3"></div><script>afiliazePlayer("v3")</script><div class="info"><div class="nome">Rodízio Kids</div><div class="preco">R$ 59,90</div></div></div>
+</div></div>
 
 <!-- QUERIDINHOS -->
-<div class="section" id="queridinhos">
-<h2>Queridinhos da Casa</h2>
-<div class="grid">
+<div class="section" id="queridinhos"><h2>Queridinhos da Casa</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v4"></div><script>afiliazePlayer("v4")</script><div class="info"><div class="nome">Combinado do Cheff</div><div class="preco">R$ 229,00</div></div></div>
+<div class="card"><div class="player-slot" id="v5"></div><script>afiliazePlayer("v5")</script><div class="info"><div class="nome">Combinado Salmão (22 peças)</div><div class="preco">R$ 110,00</div></div></div>
+<div class="card"><div class="player-slot" id="v6"></div><script>afiliazePlayer("v6")</script><div class="info"><div class="nome">Combinado Ajisai</div><div class="preco">R$ 70,00</div></div></div>
+<div class="card"><div class="player-slot" id="v7"></div><script>afiliazePlayer("v7")</script><div class="info"><div class="nome">Combinado Sakura</div><div class="preco">R$ 140,00</div></div></div>
+</div></div>
 
-<div class="card"><div class="player-slot"><div class="afze-player" id="video4"></div></div><div class="info"><div class="nome">Combinado do Cheff</div><div class="preco">R$ 229,00</div></div></div>
-<div class="card"><div class="player-slot"><div class="afze-player" id="video5"></div></div><div class="info"><div class="nome">Combinado Salmão</div><div class="preco">R$ 110,00</div></div></div>
-<div class="card"><div class="player-slot"><div class="afze-player" id="video6"></div></div><div class="info"><div class="nome">Combinado Ajisai</div><div class="preco">R$ 70,00</div></div></div>
-<div class="card"><div class="player-slot"><div class="afze-player" id="video7"></div></div><div class="info"><div class="nome">Combinado Sakura</div><div class="preco">R$ 140,00</div></div></div>
+<!-- ALMOÇO EXECUTIVO -->
+<div class="section" id="executivo"><h2>Almoço Executivo</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v8"></div><script>afiliazePlayer("v8")</script><div class="info"><div class="nome">Executivo de Peixe Branco</div><div class="preco">R$ 42,00</div></div></div>
+<div class="card"><div class="player-slot" id="v9"></div><script>afiliazePlayer("v9")</script><div class="info"><div class="nome">Executivo de Salmão Grelhado</div><div class="preco">R$ 54,00</div></div></div>
+<div class="card"><div class="player-slot" id="v10"></div><script>afiliazePlayer("v10")</script><div class="info"><div class="nome">Yakisoba Executivo</div><div class="preco">R$ 38,00</div></div></div>
+</div></div>
 
-</div>
-</div>
+<!-- PETISCOS -->
+<div class="section" id="petiscos"><h2>Para Petiscar</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v11"></div><script>afiliazePlayer("v11")</script><div class="info"><div class="nome">Edamame com Flor de Sal</div><div class="preco">R$ 28,00</div></div></div>
+<div class="card"><div class="player-slot" id="v12"></div><script>afiliazePlayer("v12")</script><div class="info"><div class="nome">Sunomono Simples</div><div class="preco">R$ 18,00</div></div></div>
+<div class="card"><div class="player-slot" id="v13"></div><script>afiliazePlayer("v13")</script><div class="info"><div class="nome">Shimeji na Manteiga</div><div class="preco">R$ 45,00</div></div></div>
+<div class="card"><div class="player-slot" id="v14"></div><script>afiliazePlayer("v14")</script><div class="info"><div class="nome">Guioza Suíno</div><div class="preco">R$ 32,00</div></div></div>
+<div class="card"><div class="player-slot" id="v15"></div><script>afiliazePlayer("v15")</script><div class="info"><div class="nome">Harumaki de Queijo</div><div class="preco">R$ 18,00</div></div></div>
+<div class="card"><div class="player-slot" id="v16"></div><script>afiliazePlayer("v16")</script><div class="info"><div class="nome">Ebi Spicy</div><div class="preco">R$ 58,00</div></div></div>
+</div></div>
 
-<!-- ⚠️ O RESTANTE SEGUE O MESMO PADRÃO -->
+<!-- HOTS -->
+<div class="section" id="hots"><h2>Hots</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v17"></div><script>afiliazePlayer("v17")</script><div class="info"><div class="nome">Hot Philadelphia</div><div class="preco">R$ 36,00</div></div></div>
+<div class="card"><div class="player-slot" id="v18"></div><script>afiliazePlayer("v18")</script><div class="info"><div class="nome">Hot Especial do Cheff</div><div class="preco">R$ 42,00</div></div></div>
+<div class="card"><div class="player-slot" id="v19"></div><script>afiliazePlayer("v19")</script><div class="info"><div class="nome">Hot Doce</div><div class="preco">R$ 28,00</div></div></div>
+</div></div>
+
+<!-- SASHIMIS -->
+<div class="section" id="sashimis"><h2>Sashimis</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v20"></div><script>afiliazePlayer("v20")</script><div class="info"><div class="nome">Sashimi Salmão</div><div class="preco">R$ 32,00</div></div></div>
+<div class="card"><div class="player-slot" id="v21"></div><script>afiliazePlayer("v21")</script><div class="info"><div class="nome">Sashimi Atum</div><div class="preco">R$ 34,00</div></div></div>
+<div class="card"><div class="player-slot" id="v22"></div><script>afiliazePlayer("v22")</script><div class="info"><div class="nome">Sashimi Tilápia</div><div class="preco">R$ 26,00</div></div></div>
+<div class="card"><div class="player-slot" id="v23"></div><script>afiliazePlayer("v23")</script><div class="info"><div class="nome">Barriga de Salmão Trufado</div><div class="preco">R$ 42,00</div></div></div>
+</div></div>
+
+<!-- CARPACCIOS -->
+<div class="section" id="carpaccios"><h2>Carpaccios</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v24"></div><script>afiliazePlayer("v24")</script><div class="info"><div class="nome">Carpaccio de Salmão</div><div class="preco">R$ 58,00</div></div></div>
+<div class="card"><div class="player-slot" id="v25"></div><script>afiliazePlayer("v25")</script><div class="info"><div class="nome">Carpaccio de Tilápia</div><div class="preco">R$ 48,00</div></div></div>
+<div class="card"><div class="player-slot" id="v26"></div><script>afiliazePlayer("v26")</script><div class="info"><div class="nome">Carpaccio Trufado Ori</div><div class="preco">R$ 68,00</div></div></div>
+</div></div>
+
+<!-- GUNKANS -->
+<div class="section" id="gunkans"><h2>Gunkans e Niguiris</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v27"></div><script>afiliazePlayer("v27")</script><div class="info"><div class="nome">Niguiri Salmão</div><div class="preco">R$ 18,00</div></div></div>
+<div class="card"><div class="player-slot" id="v28"></div><script>afiliazePlayer("v28")</script><div class="info"><div class="nome">Niguiri Skin</div><div class="preco">R$ 14,00</div></div></div>
+<div class="card"><div class="player-slot" id="v29"></div><script>afiliazePlayer("v29")</script><div class="info"><div class="nome">Gunkan Shake</div><div class="preco">R$ 20,00</div></div></div>
+<div class="card"><div class="player-slot" id="v30"></div><script>afiliazePlayer("v30")</script><div class="info"><div class="nome">Gunkan Ebi</div><div class="preco">R$ 24,00</div></div></div>
+<div class="card"><div class="player-slot" id="v31"></div><script>afiliazePlayer("v31")</script><div class="info"><div class="nome">Gunkan Especial do Cheff</div><div class="preco">R$ 26,00</div></div></div>
+</div></div>
+
+<!-- TEMAKIS -->
+<div class="section" id="temakis"><h2>Temakis</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v32"></div><script>afiliazePlayer("v32")</script><div class="info"><div class="nome">Temaki Philadelphia</div><div class="preco">R$ 38,00</div></div></div>
+<div class="card"><div class="player-slot" id="v33"></div><script>afiliazePlayer("v33")</script><div class="info"><div class="nome">Temaki Salmão Grelhado</div><div class="preco">R$ 36,00</div></div></div>
+<div class="card"><div class="player-slot" id="v34"></div><script>afiliazePlayer("v34")</script><div class="info"><div class="nome">Temaki Hot</div><div class="preco">R$ 42,00</div></div></div>
+<div class="card"><div class="player-slot" id="v35"></div><script>afiliazePlayer("v35")</script><div class="info"><div class="nome">Temaki sem Arroz</div><div class="preco">R$ 48,00</div></div></div>
+</div></div>
+
+<!-- COMBINADOS -->
+<div class="section" id="combinados"><h2>Combinados Especiais</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v36"></div><script>afiliazePlayer("v36")</script><div class="info"><div class="nome">Combo Fit</div><div class="preco">R$ 115,00</div></div></div>
+<div class="card"><div class="player-slot" id="v37"></div><script>afiliazePlayer("v37")</script><div class="info"><div class="nome">Combinado sem Cream Cheese</div><div class="preco">R$ 99,00</div></div></div>
+<div class="card"><div class="player-slot" id="v38"></div><script>afiliazePlayer("v38")</script><div class="info"><div class="nome">Combinado Ume</div><div class="preco">R$ 190,00</div></div></div>
+</div></div>
+
+<!-- QUENTES -->
+<div class="section" id="quentes"><h2>Pratos Quentes</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v39"></div><script>afiliazePlayer("v39")</script><div class="info"><div class="nome">Yakisoba Misto</div><div class="preco">R$ 62,00</div></div></div>
+<div class="card"><div class="player-slot" id="v40"></div><script>afiliazePlayer("v40")</script><div class="info"><div class="nome">Teppanyaki de Salmão</div><div class="preco">R$ 78,00</div></div></div>
+<div class="card"><div class="player-slot" id="v41"></div><script>afiliazePlayer("v41")</script><div class="info"><div class="nome">Chicken Katsu</div><div class="preco">R$ 48,00</div></div></div>
+</div></div>
+
+<!-- BEBIDAS -->
+<div class="section" id="bebidas"><h2>Bebidas & Sobremesas</h2><div class="grid">
+<div class="card"><div class="player-slot" id="v42"></div><script>afiliazePlayer("v42")</script><div class="info"><div class="nome">Refrigerante Lata</div><div class="preco">R$ 7,50</div></div></div>
+<div class="card"><div class="player-slot" id="v43"></div><script>afiliazePlayer("v43")</script><div class="info"><div class="nome">Água Mineral</div><div class="preco">R$ 6,00</div></div></div>
+<div class="card"><div class="player-slot" id="v44"></div><script>afiliazePlayer("v44")</script><div class="info"><div class="nome">Cerveja Long Neck</div><div class="preco">R$ 12,00</div></div></div>
+<div class="card"><div class="player-slot" id="v45"></div><script>afiliazePlayer("v45")</script><div class="info"><div class="nome">Petit Gateau</div><div class="preco">R$ 28,00</div></div></div>
+<div class="card"><div class="player-slot" id="v46"></div><script>afiliazePlayer("v46")</script><div class="info"><div class="nome">Tempurá de Sorvete</div><div class="preco">R$ 26,00</div></div></div>
+</div></div>
 
 </div>
 </body>
